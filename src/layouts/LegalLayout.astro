@@ -39,6 +39,7 @@ const { title, description, lastUpdated } = Astro.props;
 
   .back-link { color: var(--color-teal); font-size: 0.8125rem; font-weight: 600; display: inline-block; margin-bottom: 1rem; transition: opacity 0.15s; }
   .back-link:hover { opacity: 0.8; }
+  .back-link:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 2px; }
 
   h1 { color: var(--color-charcoal); font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
 
@@ -51,6 +52,7 @@ const { title, description, lastUpdated } = Astro.props;
   .prose :global(p)  { margin-bottom: 1rem; color: var(--color-slate); }
   .prose :global(a)  { color: var(--color-teal); border-bottom: 1px solid var(--color-teal-border); }
   .prose :global(a:hover) { border-bottom-color: var(--color-teal); }
+  .prose :global(a:focus-visible) { outline: 2px solid var(--color-teal); outline-offset: 2px; }
   .prose :global(ul), .prose :global(ol) { margin: 0 0 1rem 1.25rem; color: var(--color-slate); }
   .prose :global(li) { margin-bottom: 0.375rem; }
   .prose :global(strong) { font-weight: 700; color: var(--color-charcoal); }
