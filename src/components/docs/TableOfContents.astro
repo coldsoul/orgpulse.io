@@ -1,0 +1,50 @@
+---
+// src/components/docs/TableOfContents.astro
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+
+// Only show h2 headings (depth 2) in the TOC
+const toc = headings.filter(h => h.depth === 2);
+---
+
+{toc.length > 0 && (
+  <nav class="toc" aria-label="On this page">
+    <p class="toc-label">On this page</p>
+    <ul>
+      {toc.map(h => (
+        <li>
+          <a href={`#${h.slug}`} class="toc-link">{h.text}</a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}
+
+<style>
+  .toc { padding: 2rem 1.25rem; position: sticky; top: 80px; }
+
+  .toc-label {
+    color: var(--color-muted);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .toc-link {
+    color: var(--color-muted);
+    font-size: 0.6875rem;
+    line-height: 1.45;
+    transition: color 0.1s;
+  }
+
+  .toc-link:hover { color: var(--color-teal); }
+</style>

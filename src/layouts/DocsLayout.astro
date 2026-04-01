@@ -1,0 +1,267 @@
+---
+// src/layouts/DocsLayout.astro
+import type { CollectionEntry } from 'astro:content';
+import type { MarkdownHeading } from 'astro';
+import { getCollection } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import DocsSidebar from '../components/docs/DocsSidebar.astro';
+import TableOfContents from '../components/docs/TableOfContents.astro';
+
+interface Props {
+  entry: CollectionEntry<'docs'>;
+  headings: MarkdownHeading[];
+}
+
+const { entry, headings } = Astro.props;
+
+const currentSlug = entry.id.split('/').pop()!;
+
+// Build prev/next navigation
+const allDocs = await getCollection('docs');
+
+const CATEGORY_ORDER = ['tutorials', 'how-to', 'reference', 'explanation'] as const;
+
+const sorted = [...allDocs].sort((a, b) => {
+  const catA = CATEGORY_ORDER.indexOf(a.data.category as typeof CATEGORY_ORDER[number]);
+  const catB = CATEGORY_ORDER.indexOf(b.data.category as typeof CATEGORY_ORDER[number]);
+  if (catA !== catB) return catA - catB;
+  return a.data.order - b.data.order;
+});
+
+const currentIndex = sorted.findIndex(d => d.id.split('/').pop() === currentSlug);
+const prevDoc = currentIndex > 0 ? sorted[currentIndex - 1] : null;
+const nextDoc = currentIndex < sorted.length - 1 ? sorted[currentIndex + 1] : null;
+
+const categoryLabels: Record<string, string> = {
+  tutorials:   'Tutorials',
+  'how-to':    'How-to Guides',
+  reference:   'Reference',
+  explanation: 'Explanation',
+};
+
+const typeLabels: Record<string, string> = {
+  tutorial:    'Tutorial',
+  'how-to':    'How-to Guide',
+  reference:   'Reference',
+  explanation: 'Explanation',
+};
+
+const typeLabel = typeLabels[entry.data.type];
+const categoryLabel = categoryLabels[entry.data.category];
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.description}>
+  <div class="docs-layout">
+
+    <DocsSidebar currentSlug={currentSlug} />
+
+    <article class="docs-content">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/docs/getting-started">Docs</a>
+        <span aria-hidden="true">›</span>
+        <span>{categoryLabel}</span>
+        <span aria-hidden="true">›</span>
+        <span>{entry.data.title}</span>
+      </nav>
+
+      <span class="doc-type-label">{typeLabel}</span>
+      <h1>{entry.data.title}</h1>
+
+      <div class="doc-body prose">
+        <slot />
+      </div>
+
+      <nav class="doc-pagination" aria-label="Article navigation">
+        {prevDoc && (
+          <a href={`/docs/${prevDoc.id.split('/').pop()}`} class="pagination-link pagination-prev">
+            <span class="pagination-dir">← Previous</span>
+            <span class="pagination-title">{prevDoc.data.title}</span>
+          </a>
+        )}
+        {nextDoc && (
+          <a href={`/docs/${nextDoc.id.split('/').pop()}`} class="pagination-link pagination-next">
+            <span class="pagination-dir">Next →</span>
+            <span class="pagination-title">{nextDoc.data.title}</span>
+          </a>
+        )}
+      </nav>
+    </article>
+
+    <div class="docs-toc">
+      <TableOfContents headings={headings} />
+    </div>
+
+  </div>
+</BaseLayout>
+
+<style>
+  .docs-layout {
+    display: flex;
+    min-height: calc(100vh - 60px);
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .docs-content {
+    flex: 1;
+    min-width: 0;
+    padding: 2rem 3rem;
+    max-width: 760px;
+  }
+
+  .docs-toc {
+    width: 200px;
+    flex-shrink: 0;
+    border-left: 1px solid var(--color-border);
+  }
+
+  /* Breadcrumb */
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: var(--color-muted);
+    font-size: 0.6875rem;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .breadcrumb a { color: var(--color-muted); transition: color 0.1s; }
+  .breadcrumb a:hover { color: var(--color-teal); }
+  .breadcrumb span:last-child { color: var(--color-charcoal); }
+
+  /* Doc type label */
+  .doc-type-label {
+    display: block;
+    color: var(--color-muted);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    color: var(--color-charcoal);
+    font-size: 1.875rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Prose styles */
+  .prose {
+    color: var(--color-charcoal);
+    font-size: 0.9375rem;
+    line-height: 1.75;
+  }
+
+  .prose :global(h2) {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 2rem 0 0.75rem;
+    color: var(--color-charcoal);
+  }
+
+  .prose :global(h3) {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    margin: 1.5rem 0 0.5rem;
+    color: var(--color-charcoal);
+  }
+
+  .prose :global(p) { margin-bottom: 1rem; color: var(--color-slate); }
+
+  .prose :global(a) {
+    color: var(--color-teal);
+    border-bottom: 1px solid var(--color-teal-border);
+    transition: border-color 0.1s;
+  }
+
+  .prose :global(a:hover) { border-bottom-color: var(--color-teal); }
+
+  .prose :global(ul), .prose :global(ol) {
+    margin: 0 0 1rem 1.25rem;
+    color: var(--color-slate);
+  }
+
+  .prose :global(li) { margin-bottom: 0.375rem; }
+
+  .prose :global(code) {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: 0.1em 0.35em;
+    font-size: 0.875em;
+    font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
+    color: var(--color-charcoal);
+  }
+
+  .prose :global(pre) {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    margin-bottom: 1.25rem;
+  }
+
+  .prose :global(pre code) {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.875rem;
+  }
+
+  .prose :global(blockquote) {
+    border-left: 3px solid var(--color-teal);
+    background: var(--color-teal-surface);
+    padding: 0.75rem 1rem;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 1rem;
+  }
+
+  .prose :global(table) { width: 100%; border-collapse: collapse; margin-bottom: 1.25rem; font-size: 0.875rem; }
+  .prose :global(th), .prose :global(td) { padding: 0.625rem 0.875rem; border: 1px solid var(--color-border); text-align: left; }
+  .prose :global(th) { background: var(--color-surface); font-weight: 700; color: var(--color-charcoal); }
+  .prose :global(td) { color: var(--color-slate); }
+
+  .prose :global(hr) { border: none; border-top: 1px solid var(--color-border); margin: 2rem 0; }
+
+  .prose :global(strong) { font-weight: 700; color: var(--color-charcoal); }
+
+  /* Pagination */
+  .doc-pagination {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .pagination-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    transition: color 0.1s;
+  }
+
+  .pagination-next { text-align: right; margin-left: auto; }
+
+  .pagination-dir   { color: var(--color-muted); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .pagination-title { color: var(--color-teal); font-size: 0.875rem; font-weight: 600; }
+
+  .pagination-link:hover .pagination-title { text-decoration: underline; }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .docs-toc { display: none; }
+  }
+
+  @media (max-width: 768px) {
+    .docs-layout { flex-direction: column; }
+    aside.sidebar { width: 100%; min-height: auto; border-right: none; border-bottom: 1px solid var(--color-border); }
+    .docs-content { padding: 1.5rem; }
+  }
+</style>
