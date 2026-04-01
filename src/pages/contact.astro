@@ -1,0 +1,106 @@
+---
+// src/pages/contact.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { MARKETPLACE_URL } from '../consts';
+---
+
+<BaseLayout
+  title="Contact"
+  description="Get help with OrgPulse, report an issue, or find answers in the knowledge base."
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="section-label">Contact</p>
+      <h1>We're here to <span class="highlight">help</span>.</h1>
+      <p class="subtitle">
+        Have a question about OrgPulse, need help with your setup, or want to report an issue?
+        Reach out and we'll get back to you.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="contact-cards">
+
+        <div class="contact-card">
+          <div class="card-icon">✉</div>
+          <div class="card-body">
+            <h2>Email support</h2>
+            <p>For questions, bug reports, and general enquiries. We aim to respond within one business day.</p>
+            <a href="mailto:hello@orgpulse.io" class="card-link">hello@orgpulse.io</a>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <div class="card-icon">📖</div>
+          <div class="card-body">
+            <h2>Knowledge base</h2>
+            <p>Tutorials, how-to guides, and reference documentation. Most setup and configuration questions are answered there.</p>
+            <a href="/docs/getting-started" class="card-link">Browse the docs →</a>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <div class="card-icon">⭐</div>
+          <div class="card-body">
+            <h2>Atlassian Marketplace</h2>
+            <p>Leave a review, report an issue, or find the app listing on the Atlassian Marketplace.</p>
+            <a href={MARKETPLACE_URL} class="card-link" target="_blank" rel="noopener noreferrer">View on Marketplace →</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .container { max-width: 720px; margin: 0 auto; padding: 0 2.5rem; }
+
+  .page-hero { padding: 4.5rem 0 3rem; border-bottom: 1px solid var(--color-border); }
+  .section   { padding: 3.5rem 0 5rem; }
+
+  .section-label { color: var(--color-muted); font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.625rem; }
+
+  h1 { color: var(--color-charcoal); font-size: clamp(2rem, 5vw, 2.5rem); font-weight: 800; margin-bottom: 0.875rem; }
+  .highlight { color: var(--color-teal); }
+  .subtitle { color: var(--color-slate); font-size: 1rem; line-height: 1.7; }
+
+  .contact-cards { display: flex; flex-direction: column; gap: 1rem; }
+
+  .contact-card {
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  .card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: var(--color-teal-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.125rem;
+    flex-shrink: 0;
+  }
+
+  .card-body h2 { color: var(--color-charcoal); font-size: 0.9375rem; font-weight: 700; margin-bottom: 0.375rem; }
+  .card-body p  { color: var(--color-slate); font-size: 0.8125rem; line-height: 1.6; margin-bottom: 0.5rem; }
+
+  .card-link {
+    color: var(--color-teal);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    border-bottom: 1px solid var(--color-teal);
+    padding-bottom: 1px;
+    transition: opacity 0.15s;
+  }
+
+  .card-link:hover { opacity: 0.8; }
+</style>
