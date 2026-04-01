@@ -1,0 +1,280 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+---
+
+<LegalLayout
+  title="OrgPulse Data Processing Addendum"
+  description="Data Processing Addendum governing how OrgPulse processes personal data on behalf of the Controller."
+  lastUpdated="April 2025"
+>
+  <p>This Data Processing Addendum ("DPA") forms part of the agreement between the customer organisation ("Controller", "you") and OrgPulse ("Processor", "we", "us") governing the processing of personal data through the OrgPulse application.</p>
+  <p>This DPA supplements and is incorporated into the OrgPulse End User Terms. In the event of a conflict between this DPA and the End User Terms, this DPA prevails with respect to the processing of personal data.</p>
+
+  <hr />
+
+  <h2>1. Definitions</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Term</th>
+        <th>Meaning</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Personal Data</strong></td>
+        <td>Any information relating to an identified or identifiable natural person, as defined in GDPR Article 4(1)</td>
+      </tr>
+      <tr>
+        <td><strong>Processing</strong></td>
+        <td>Any operation performed on Personal Data, including collection, recording, organisation, structuring, storage, adaptation, retrieval, consultation, use, disclosure, erasure, or destruction</td>
+      </tr>
+      <tr>
+        <td><strong>Data Subject</strong></td>
+        <td>An identified or identifiable natural person whose Personal Data is processed</td>
+      </tr>
+      <tr>
+        <td><strong>Sub-processor</strong></td>
+        <td>A third party engaged by the Processor to process Personal Data on behalf of the Controller</td>
+      </tr>
+      <tr>
+        <td><strong>Applicable Data Protection Law</strong></td>
+        <td>GDPR (EU 2016/679), UK GDPR, and any other applicable data protection legislation in the jurisdictions where Controller operates</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr />
+
+  <h2>2. Scope and Purpose of Processing</h2>
+
+  <h3>2.1 Purpose</h3>
+  <p>OrgPulse processes Personal Data solely to provide the team health diagnostics service described in the OrgPulse End User Terms, including:</p>
+  <ul>
+    <li>Ingesting Jira issue status transition histories and sprint metadata</li>
+    <li>Computing team-level workflow metrics (cycle time, lead time, throughput, WIP, cycle time variance)</li>
+    <li>Detecting dysfunction patterns and generating diagnostic events</li>
+    <li>Delivering weekly digest summaries via Slack webhook or email</li>
+  </ul>
+
+  <h3>2.2 Categories of Data Subjects</h3>
+  <ul>
+    <li>Members of Jira projects monitored by OrgPulse (identified by Jira account IDs for team grouping purposes only)</li>
+  </ul>
+
+  <h3>2.3 Types of Personal Data Processed</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Data Type</th>
+        <th>Processing Purpose</th>
+        <th>Stored?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Jira account IDs</td>
+        <td>Team membership grouping during computation</td>
+        <td>No — used transiently, never persisted</td>
+      </tr>
+      <tr>
+        <td>Issue status transition timestamps</td>
+        <td>Metric computation (cycle time, lead time)</td>
+        <td>No — only derived aggregates stored</td>
+      </tr>
+      <tr>
+        <td>Issue creation timestamps</td>
+        <td>Lead time computation</td>
+        <td>No — only derived aggregates stored</td>
+      </tr>
+      <tr>
+        <td>Sprint membership</td>
+        <td>Sprint-boundary metric calculations</td>
+        <td>No — only sprint IDs retained for ordering</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>2.4 Data Not Processed</h3>
+  <p>OrgPulse does not access or process: issue titles, descriptions, comments, attachments, assignee names, email addresses, or any free-text content from Jira.</p>
+
+  <hr />
+
+  <h2>3. Obligations of the Processor</h2>
+
+  <h3>3.1 Processing Instructions</h3>
+  <p>The Processor shall process Personal Data only on documented instructions from the Controller, unless required to do so by applicable law. The installation and configuration of OrgPulse by the Controller constitutes the Controller's documented instructions for processing.</p>
+
+  <h3>3.2 Confidentiality</h3>
+  <p>The Processor ensures that all personnel authorised to process Personal Data are bound by obligations of confidentiality.</p>
+
+  <h3>3.3 Security Measures</h3>
+  <p>The Processor implements the following technical and organisational measures:</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Measure</th>
+        <th>Implementation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Infrastructure isolation</strong></td>
+        <td>OrgPulse runs entirely on Atlassian's managed Forge platform. No external servers are operated.</td>
+      </tr>
+      <tr>
+        <td><strong>Encryption at rest</strong></td>
+        <td>Forge Storage provides encryption at rest for all stored data.</td>
+      </tr>
+      <tr>
+        <td><strong>Encryption in transit</strong></td>
+        <td>All communication between the Forge app and Jira APIs uses TLS 1.2+.</td>
+      </tr>
+      <tr>
+        <td><strong>Access control</strong></td>
+        <td>OrgPulse uses role-based access with an allowlist model. Only authorised users (configured by the workspace admin) can view dashboard data.</td>
+      </tr>
+      <tr>
+        <td><strong>Minimal data retention</strong></td>
+        <td>Personal Data is processed transiently. Only team-level aggregates are persisted.</td>
+      </tr>
+      <tr>
+        <td><strong>Credential protection</strong></td>
+        <td>Third-party API keys (SendGrid, Slack webhook) are stored in Forge's encrypted environment variable store.</td>
+      </tr>
+      <tr>
+        <td><strong>Read-only scopes</strong></td>
+        <td>OrgPulse requests only three read-only OAuth scopes: <code>read:jira-work</code>, <code>read:jira-user</code>, <code>read:sprint</code>. No write access to Jira data.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>3.4 Sub-processors</h3>
+  <p>The Processor uses the following sub-processors:</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Sub-processor</th>
+        <th>Purpose</th>
+        <th>Data Processed</th>
+        <th>Location</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Atlassian (Forge platform)</strong></td>
+        <td>Application hosting, Forge Storage, Jira API access</td>
+        <td>All data described in Section 2.3</td>
+        <td>As per Atlassian's data residency settings</td>
+      </tr>
+      <tr>
+        <td><strong>SendGrid (Twilio)</strong></td>
+        <td>Email digest delivery (optional, admin-configured)</td>
+        <td>Formatted digest content only — no Personal Data</td>
+        <td>United States</td>
+      </tr>
+      <tr>
+        <td><strong>Slack (Salesforce)</strong></td>
+        <td>Slack digest delivery (optional, admin-configured)</td>
+        <td>Formatted digest content only — no Personal Data</td>
+        <td>United States</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>The Processor shall notify the Controller of any intended changes to sub-processors, giving the Controller the opportunity to object. Notification will be provided via email to the workspace administrator's registered address at least 30 days before the change takes effect.</p>
+
+  <h3>3.5 Data Subject Rights</h3>
+  <p>The Processor shall assist the Controller in responding to requests from Data Subjects exercising their rights under Applicable Data Protection Law, including:</p>
+  <ul>
+    <li><strong>Right of access</strong> (Article 15) — The Processor can confirm what categories of data are processed. Since no Personal Data is stored, there is no stored personal data to export.</li>
+    <li><strong>Right to erasure</strong> (Article 17) — Uninstalling OrgPulse triggers immediate deletion of all configuration, baselines, and diagnostic events for the workspace. Individual erasure requests are satisfied by the fact that no Personal Data is persisted.</li>
+    <li><strong>Right to restriction</strong> (Article 18) — The Controller can pause processing by disabling the OrgPulse scheduled trigger or uninstalling the app.</li>
+    <li><strong>Right to data portability</strong> (Article 20) — Not applicable as no Personal Data is stored in a structured, machine-readable format attributable to individuals.</li>
+  </ul>
+
+  <h3>3.6 Data Breach Notification</h3>
+  <p>The Processor shall notify the Controller without undue delay (and in any event within 72 hours) after becoming aware of a Personal Data breach. Notification shall include:</p>
+  <ol>
+    <li>The nature of the breach, including categories and approximate number of Data Subjects affected</li>
+    <li>The likely consequences of the breach</li>
+    <li>The measures taken or proposed to address the breach</li>
+  </ol>
+  <p>Contact for breach notifications: <a href="mailto:security@orgpulse.io">security@orgpulse.io</a></p>
+
+  <h3>3.7 Data Protection Impact Assessment</h3>
+  <p>The Processor shall provide reasonable assistance to the Controller in conducting Data Protection Impact Assessments (DPIAs) where required under Article 35 of the GDPR, taking into account the nature of the processing and the information available to the Processor.</p>
+
+  <hr />
+
+  <h2>4. Obligations of the Controller</h2>
+  <p>The Controller warrants that:</p>
+  <ul>
+    <li>It has a lawful basis for the processing of Personal Data by OrgPulse (typically legitimate interest in monitoring team workflow health, or consent where required)</li>
+    <li>It has provided appropriate notice to Data Subjects (team members) that workflow metadata will be processed for team-level analytics</li>
+    <li>It will not configure OrgPulse in a manner that causes the Processor to violate Applicable Data Protection Law</li>
+  </ul>
+
+  <hr />
+
+  <h2>5. Data Retention and Deletion</h2>
+
+  <h3>5.1 During the Subscription</h3>
+  <ul>
+    <li>Personal Data (Jira account IDs) is processed transiently during each computation cycle and is not persisted</li>
+    <li>Derived aggregates (metric values, baselines, diagnostic events) are retained for 18 months and then automatically purged</li>
+  </ul>
+
+  <h3>5.2 Upon Termination</h3>
+  <p>Upon uninstallation of OrgPulse from the Controller's Jira workspace:</p>
+  <ul>
+    <li>All stored configuration, baselines, and diagnostic events for that workspace are immediately deleted from Forge Storage</li>
+    <li>No copies are retained by the Processor</li>
+    <li>Deletion is automatic and does not require a separate request</li>
+  </ul>
+
+  <hr />
+
+  <h2>6. International Data Transfers</h2>
+  <p>OrgPulse processes data within the Atlassian Forge infrastructure, which follows Atlassian's data residency policies. Where data is transferred outside the European Economic Area (EEA), such transfers rely on:</p>
+  <ul>
+    <li>Atlassian's own data transfer mechanisms (Standard Contractual Clauses or adequacy decisions) for Forge infrastructure</li>
+    <li>Standard Contractual Clauses for SendGrid and Slack sub-processors, where applicable</li>
+  </ul>
+  <p>The Processor shall ensure that any international transfer of Personal Data complies with Chapter V of the GDPR.</p>
+
+  <hr />
+
+  <h2>7. Audit Rights</h2>
+  <p>The Controller has the right to audit the Processor's compliance with this DPA. The Processor shall:</p>
+  <ul>
+    <li>Make available all information necessary to demonstrate compliance</li>
+    <li>Allow for and contribute to audits conducted by the Controller or an independent auditor mandated by the Controller</li>
+    <li>Provide audit results upon reasonable request (no more than once per year unless a breach has occurred)</li>
+  </ul>
+  <p>Given that OrgPulse runs entirely on managed Forge infrastructure, audit scope is limited to the Processor's application code, configuration, and data handling practices. Atlassian's own infrastructure security is covered by Atlassian's SOC 2 and ISO 27001 certifications.</p>
+
+  <hr />
+
+  <h2>8. Liability</h2>
+  <p>Each party's liability under this DPA is subject to the limitations and exclusions set out in the End User Terms. Nothing in this DPA limits either party's liability for breaches of Applicable Data Protection Law where such limitation is not permitted by law.</p>
+
+  <hr />
+
+  <h2>9. Term and Termination</h2>
+  <p>This DPA takes effect when the Controller installs OrgPulse and remains in effect for the duration of the Processor's processing of Personal Data on behalf of the Controller. Upon termination, the Processor shall comply with the deletion obligations in Section 5.2.</p>
+
+  <hr />
+
+  <h2>10. Governing Law</h2>
+  <p>This DPA is governed by the same law that governs the End User Terms. For Data Subjects in the EEA, the provisions of the GDPR apply regardless of the governing law of the End User Terms.</p>
+
+  <hr />
+
+  <h2>Contact</h2>
+  <p>For questions about this DPA or to exercise audit rights:</p>
+  <ul>
+    <li><strong>Data Protection Officer:</strong> <a href="mailto:privacy@orgpulse.io">privacy@orgpulse.io</a></li>
+    <li><strong>Security incidents:</strong> <a href="mailto:security@orgpulse.io">security@orgpulse.io</a></li>
+    <li><strong>General support:</strong> <a href="mailto:support@orgpulse.io">support@orgpulse.io</a></li>
+  </ul>
+</LegalLayout>

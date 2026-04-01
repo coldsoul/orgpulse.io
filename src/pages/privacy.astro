@@ -1,0 +1,59 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+---
+
+<LegalLayout
+  title="OrgPulse Privacy Policy"
+  description="How OrgPulse accesses, processes, and protects your Jira workspace data."
+  lastUpdated="April 2025"
+>
+  <h2>What OrgPulse accesses</h2>
+  <p>OrgPulse requests three read-only Jira Cloud OAuth 2.0 scopes:</p>
+  <ul>
+    <li><strong><code>read:jira-work</code></strong> — Issue status transition history, sprint membership, issue types, and created/updated timestamps. Used to compute team-level workflow metrics.</li>
+    <li><strong><code>read:jira-user</code></strong> — Team membership (which users belong to which project or board). Used only to group metrics by team. User identities are never stored.</li>
+    <li><strong><code>read:sprint</code></strong> — Sprint start/end timestamps and sprint names. Required for sprint-boundary metric calculations and calibration.</li>
+  </ul>
+
+  <h2>What OrgPulse stores</h2>
+  <p>OrgPulse stores only derived aggregates — never raw issue content:</p>
+  <ul>
+    <li><strong>Workflow metrics</strong> — Cycle time, lead time, throughput, WIP, and cycle time variance, computed as team-level aggregates.</li>
+    <li><strong>Baseline models</strong> — Exponentially weighted moving averages (EWMA) and statistical distributions per metric, per team.</li>
+    <li><strong>Diagnostic events</strong> — Pattern detection results (e.g. "Chronic WIP Inflation detected"), including the evidence that triggered them (metric values and sprint IDs). No issue titles or descriptions.</li>
+    <li><strong>Team configuration</strong> — Status mapping rules and issue type classifications set during onboarding.</li>
+  </ul>
+
+  <h2>What OrgPulse does NOT store</h2>
+  <ul>
+    <li>Jira issue titles, descriptions, comments, or any free-text content</li>
+    <li>Individual-level metrics or data attributable to a specific person</li>
+    <li>Assignee names or user IDs in any stored key or value</li>
+    <li>Sprint names beyond the sprint ID used for ordering</li>
+  </ul>
+
+  <h2>Individual data prohibition</h2>
+  <p>Individual-level data is architecturally excluded. The <code>read:jira-user</code> scope is consumed only to determine team membership grouping. No per-user metric is computed or stored at any layer of the system.</p>
+
+  <h2>Data retention</h2>
+  <p>Metric aggregates and diagnostic events are retained for 18 months and then automatically purged. Uninstalling OrgPulse from your Jira workspace triggers immediate deletion of all stored configuration, baselines, and diagnostic events for that workspace.</p>
+
+  <h2>GDPR compliance</h2>
+  <p>OrgPulse does not store personal data as defined by GDPR. Because no personal data is stored:</p>
+  <ul>
+    <li>There is no data portability obligation for individual users.</li>
+    <li>There is no right-to-erasure obligation beyond workspace deletion.</li>
+    <li>OrgPulse operates as a data processor on behalf of the Jira workspace administrator (the data controller). The Atlassian Forge platform provides the data processing agreement.</li>
+  </ul>
+
+  <h2>Security</h2>
+  <p>OrgPulse runs entirely on Atlassian's managed Forge infrastructure. No external server is operated. The only outbound connections from OrgPulse are:</p>
+  <ul>
+    <li><strong>Slack webhook</strong> (digest delivery) — URL configured by the workspace administrator, stored in Forge's encrypted environment variable store.</li>
+    <li><strong>Email API</strong> (digest delivery) — API key configured by the workspace administrator, stored in Forge's encrypted environment variable store.</li>
+  </ul>
+  <p>No customer data is transmitted to these endpoints — only formatted digest content derived from already-computed aggregates.</p>
+
+  <h2>Contact</h2>
+  <p>For privacy questions or data deletion requests, contact: <a href="mailto:privacy@orgpulse.io">privacy@orgpulse.io</a></p>
+</LegalLayout>

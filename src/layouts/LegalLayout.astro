@@ -1,0 +1,63 @@
+---
+// src/layouts/LegalLayout.astro
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  lastUpdated?: string;
+}
+
+const { title, description, lastUpdated } = Astro.props;
+---
+
+<BaseLayout title={title} {...(description ? { description } : {})}>
+  <div class="legal-page">
+    <div class="legal-container">
+      <div class="legal-header">
+        <a href="/" class="back-link">← OrgPulse</a>
+        <h1>{title}</h1>
+        {lastUpdated && <p class="last-updated">Last updated: {lastUpdated}</p>}
+      </div>
+      <div class="legal-body prose">
+        <slot />
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .legal-page { padding: 3rem 0 5rem; }
+
+  .legal-container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 2.5rem;
+  }
+
+  .legal-header { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--color-border); }
+
+  .back-link { color: var(--color-teal); font-size: 0.8125rem; font-weight: 600; display: inline-block; margin-bottom: 1rem; transition: opacity 0.15s; }
+  .back-link:hover { opacity: 0.8; }
+
+  h1 { color: var(--color-charcoal); font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+
+  .last-updated { color: var(--color-muted); font-size: 0.8125rem; }
+
+  /* Prose — same rules as DocsLayout for consistency */
+  .prose { color: var(--color-charcoal); font-size: 0.9375rem; line-height: 1.75; }
+  .prose :global(h2) { font-size: 1.25rem; font-weight: 700; margin: 2rem 0 0.75rem; }
+  .prose :global(h3) { font-size: 1.0625rem; font-weight: 700; margin: 1.5rem 0 0.5rem; }
+  .prose :global(p)  { margin-bottom: 1rem; color: var(--color-slate); }
+  .prose :global(a)  { color: var(--color-teal); border-bottom: 1px solid var(--color-teal-border); }
+  .prose :global(a:hover) { border-bottom-color: var(--color-teal); }
+  .prose :global(ul), .prose :global(ol) { margin: 0 0 1rem 1.25rem; color: var(--color-slate); }
+  .prose :global(li) { margin-bottom: 0.375rem; }
+  .prose :global(strong) { font-weight: 700; color: var(--color-charcoal); }
+  .prose :global(table) { width: 100%; border-collapse: collapse; margin-bottom: 1.25rem; font-size: 0.875rem; }
+  .prose :global(th), .prose :global(td) { padding: 0.625rem 0.875rem; border: 1px solid var(--color-border); text-align: left; }
+  .prose :global(th) { background: var(--color-surface); font-weight: 700; }
+  .prose :global(td) { color: var(--color-slate); }
+  .prose :global(hr) { border: none; border-top: 1px solid var(--color-border); margin: 2rem 0; }
+  .prose :global(code) { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 4px; padding: 0.1em 0.35em; font-size: 0.875em; font-family: 'Menlo', 'Monaco', 'Consolas', monospace; }
+</style>
