@@ -1,0 +1,82 @@
+---
+// src/components/docs/DocsSearch.astro
+// Pagefind UI — rendered only after the build indexes the site.
+// In dev mode, the index does not exist; the input is visible but non-functional.
+---
+
+<div class="search-wrapper" id="docs-search">
+  <div id="pagefind-search"></div>
+</div>
+
+<script>
+  // Dynamically load Pagefind UI after the page loads.
+  // The pagefind/ directory is only present after `astro build`.
+  async function initSearch() {
+    try {
+      // @ts-ignore — pagefind is a build-time artifact, not a static import
+      const { PagefindUI } = await import('/pagefind/pagefind-ui.js');
+      new PagefindUI({
+        element: '#pagefind-search',
+        showSubResults: false,
+        showImages: false,
+        resetStyles: true,
+        translations: {
+          placeholder: 'Search docs...',
+        },
+      });
+    } catch {
+      // Pagefind index not available (dev mode) — silent fallback
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSearch);
+  } else {
+    initSearch();
+  }
+</script>
+
+<style>
+  .search-wrapper {
+    padding: 0 1.25rem 1rem;
+  }
+
+  /* Pagefind resets — scope to our search wrapper */
+  #docs-search :global(.pagefind-ui) {
+    --pagefind-ui-scale: 0.8;
+    --pagefind-ui-primary: var(--color-teal);
+    --pagefind-ui-text: var(--color-charcoal);
+    --pagefind-ui-background: #fff;
+    --pagefind-ui-border: var(--color-border);
+    --pagefind-ui-border-radius: 6px;
+    font-family: var(--font-family);
+  }
+
+  /* Fallback input shown before Pagefind loads */
+  #docs-search :global(input[type="text"]) {
+    width: 100%;
+    border: 1px solid var(--color-border);
+    border-radius: 5px;
+    padding: 0.4375rem 0.625rem;
+    font-size: 0.75rem;
+    color: var(--color-charcoal);
+    font-family: var(--font-family);
+  }
+
+  #docs-search :global(input[type="text"]::placeholder) {
+    color: var(--color-muted);
+  }
+
+  /* Results dropdown */
+  #docs-search :global(.pagefind-ui__results-area) {
+    position: absolute;
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    width: calc(100% - 2.5rem);
+    z-index: 200;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+</style>

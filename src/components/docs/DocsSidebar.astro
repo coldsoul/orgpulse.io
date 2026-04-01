@@ -1,6 +1,7 @@
 ---
 // src/components/docs/DocsSidebar.astro
 import { getCollection } from 'astro:content';
+import DocsSearch from './DocsSearch.astro';
 
 interface Props {
   currentSlug: string;
@@ -30,7 +31,9 @@ const docsByCategory = categories.map(cat => ({
 ---
 
 <aside class="sidebar">
-  <slot name="search" />
+  <div class="sidebar-search">
+    <DocsSearch />
+  </div>
   <nav class="sidebar-nav" aria-label="Documentation navigation">
     {docsByCategory.map(cat => (
       <div class="sidebar-section">
@@ -61,6 +64,8 @@ const docsByCategory = categories.map(cat => ({
     background: var(--color-surface);
     min-height: calc(100vh - 60px);
   }
+
+  .sidebar-search { padding: 0; border-bottom: 1px solid var(--color-border); margin-bottom: 0.75rem; }
 
   .sidebar-nav { padding: 0; }
 
