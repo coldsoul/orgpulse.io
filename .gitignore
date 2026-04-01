@@ -17,6 +17,9 @@ pnpm-debug.log*
 .env
 .env.production
 
+# Claude Code internal tooling
+.nwave/
+
 # macOS-specific files
 .DS_Store
 
