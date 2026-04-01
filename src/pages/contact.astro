@@ -24,7 +24,7 @@ import { MARKETPLACE_URL } from '../consts';
       <div class="contact-cards">
 
         <div class="contact-card">
-          <div class="card-icon">✉</div>
+          <div class="card-icon" aria-hidden="true">✉</div>
           <div class="card-body">
             <h2>Email support</h2>
             <p>For questions, bug reports, and general enquiries. We aim to respond within one business day.</p>
@@ -33,7 +33,7 @@ import { MARKETPLACE_URL } from '../consts';
         </div>
 
         <div class="contact-card">
-          <div class="card-icon">📖</div>
+          <div class="card-icon" aria-hidden="true">📖</div>
           <div class="card-body">
             <h2>Knowledge base</h2>
             <p>Tutorials, how-to guides, and reference documentation. Most setup and configuration questions are answered there.</p>
@@ -42,7 +42,7 @@ import { MARKETPLACE_URL } from '../consts';
         </div>
 
         <div class="contact-card">
-          <div class="card-icon">⭐</div>
+          <div class="card-icon" aria-hidden="true">⭐</div>
           <div class="card-body">
             <h2>Atlassian Marketplace</h2>
             <p>Leave a review, report an issue, or find the app listing on the Atlassian Marketplace.</p>
@@ -103,4 +103,5 @@ import { MARKETPLACE_URL } from '../consts';
   }
 
   .card-link:hover { opacity: 0.8; }
+  .card-link:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 2px; }
 </style>
