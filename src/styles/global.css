@@ -1,0 +1,48 @@
+/* src/styles/global.css */
+:root {
+  --color-teal: #2EC4B6;
+  --color-coral: #FF6B6B;
+  --color-charcoal: #2C3E50;
+  --color-slate: #64748B;
+  --color-muted: #94A3B8;
+  --color-border: #E2E8F0;
+  --color-surface: #F7F9FB;
+  --color-teal-surface: #F0FBF9;
+  --color-teal-border: #C8F0EB;
+  --color-red-critical: #DC2626;
+  --color-amber-watch: #D97706;
+
+  --font-family: Nunito, 'Varela Round', system-ui, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-family);
+  color: var(--color-charcoal);
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img, svg {
+  display: block;
+}

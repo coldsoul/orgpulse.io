@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!--
+    OrgPulse Logo — Icon Only
+    Works on both light and dark backgrounds.
+    Primary: #2EC4B6 (teal)  Accent: #FF6B6B (coral)
+  -->
+  <g transform="translate(32, 33)">
+    <!-- Teal ring -->
+    <path d="M 0,-24 A 24,24 0 1,1 -21,-12"
+          fill="none" stroke="#2EC4B6" stroke-width="5" stroke-linecap="round"/>
+    <!-- Coral pulse spike -->
+    <path d="M -21,-12 L -17,-12 L -14,-24 L -8,6 L -3,-18 L 0,-12 L 0,-24"
+          fill="none" stroke="#FF6B6B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
